@@ -1,5 +1,17 @@
 // =============================================================================
-//char getGrade(int score)
+// PROGRAMMING FUNDAMENTALS — Assignment 2
+// =============================================================================
+// TASK: Student Grade System
+//
+// Read a student score from 0 to 100 and convert it to a letter grade:
+// A (80–100), B (70–79), C (60–69), D (50–59), or F (below 50).
+// Implement the conversion in getGrade(). Invalid scores must display an error.
+// =============================================================================
+
+#include <iostream>
+using namespace std;
+
+char getGrade(int score)
 {
     if (score < 0 || score > 100)
     {
@@ -33,7 +45,10 @@ int main()
     int score;
 
     cout << "Enter student score (0-100): ";
-    cin >> score;
+    if (!(cin >> score)) {
+        cout << "Error: Please enter a whole-number score." << endl;
+        return 1;
+    }
 
     char grade = getGrade(score);
 
