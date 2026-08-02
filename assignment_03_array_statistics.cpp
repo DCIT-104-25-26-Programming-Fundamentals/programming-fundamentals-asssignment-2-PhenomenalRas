@@ -103,7 +103,11 @@ int main()
     int n;
 
     cout << "How many numbers? ";
-    cin >> n;
+    if (!(cin >> n))
+    {
+        cout << "Error: Number of values must be a whole number." << endl;
+        return 1;
+    }
 
     if (n <= 0)
     {
@@ -116,7 +120,12 @@ int main()
     for (int i = 0; i < n; i++)
     {
         cout << "Enter number " << i + 1 << ": ";
-        cin >> numbers[i];
+        if (!(cin >> numbers[i]))
+        {
+            cout << "Error: Each value must be a whole number." << endl;
+            delete[] numbers;
+            return 1;
+        }
     }
 
     cout << "\nResults:" << endl;
