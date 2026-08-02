@@ -35,7 +35,7 @@
 // =============================================================================
 
 #include <iostream>
-using namespace std;#include <iostream>
+using namespace std;
 using namespace std;
 
 // Function to check if a number is prime
@@ -45,8 +45,8 @@ bool isPrime(int number) {
         return false;
     }
 
-    // Check for divisors from 2 up to number - 1
-    for (int i = 2; i < number; i++) {
+    // A factor larger than the square root must be paired with a smaller one.
+    for (int i = 2; i <= number / i; i++) {
         if (number % i == 0) {
             return false;
         }
@@ -61,7 +61,10 @@ int main() {
 
     // Ask the user to enter a number
     cout << "Enter a number: ";
-    cin >> number;
+    if (!(cin >> number)) {
+        cout << "Error: Please enter a whole number." << endl;
+        return 1;
+    }
 
     // Call the isPrime() function and print the result
     if (isPrime(number)) {
