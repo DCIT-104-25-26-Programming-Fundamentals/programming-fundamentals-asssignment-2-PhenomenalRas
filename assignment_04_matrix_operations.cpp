@@ -10,58 +10,235 @@
 // NOTE: Use a fixed maximum size of 10 for array dimensions.
 //       Declare arrays as int matrix[10][10].
 //
-// -----------------------------------------------------------------------------
-// PART A — Transpose a Matrix
-// -----------------------------------------------------------------------------
-// - Read an M x N matrix from the user.
-// - Compute and display its transpose (rows become columns, columns become rows).
-//
-// Example (2 x 3 input):
-//
-//   Original Matrix:      Transposed Matrix:
-//   1  2  3               1  4
-//   4  5  6               2  5
-//                         3  6
-//
-// -----------------------------------------------------------------------------
-// PART B — Add Two Matrices
-// -----------------------------------------------------------------------------
-// - Read two matrices of exactly the same size (M x N).
-// - Compute their element-wise sum and display the result.
-//
-// -----------------------------------------------------------------------------
-// PART C — Multiply Two Matrices
-// -----------------------------------------------------------------------------
-// - Read matrix A of size M x N and matrix B of size N x P.
-//   (Number of COLUMNS in A must equal number of ROWS in B.)
-// - Compute and display the matrix product A x B (result is M x P).
-//
-// -----------------------------------------------------------------------------
-// EXPECTED INPUT FORMAT
-// -----------------------------------------------------------------------------
-// The user enters each row's values one at a time:
-//
-//   Enter number of rows: 2
-//   Enter number of columns: 3
-//   Enter element [0][0]: 1
-//   Enter element [0][1]: 2
-//   ...
-//
-// -----------------------------------------------------------------------------
-// REQUIREMENTS
-// -----------------------------------------------------------------------------
-// - Use nested loops for all operations (no external libraries).
-// - Each operation must be in its own function (see scaffold below).
-// - Display each matrix in a neat, aligned grid using setw().
-// - Tip: Complete Part A first, then Parts B and C.
-//
-
-// =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
-// =============================================================================
 
 #include <iostream>
 #include <iomanip>
 #include <string>
 using namespace std;
 
+bool isValidSize(int rows, int columns) {
+    return rows > 0 && rows <= 10 && columns > 0 && columns <= 10;
+}
+
+// -----------------------------------------------------------------------------
+// Function to display a matrix in a formatted grid
+// -----------------------------------------------------------------------------
+void displayMatrix(int matrix[10][10], int rows, int columns) {
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            cout << setw(5) << matrix[i][j];
+        }
+        cout << endl;
+    }
+}
+
+// -----------------------------------------------------------------------------
+// PART A — Transpose a Matrix
+// -----------------------------------------------------------------------------
+void transposeMatrix(int matrix[10][10], int rows, int columns) {
+    int transpose[10][10];
+
+    // Compute transpose (swap rows and columns)
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            transpose[j][i] = matrix[i][j];
+        }
+    }
+
+    cout << "\nOriginal Matrix:\n";
+    displayMatrix(matrix, rows, columns);
+
+    cout << "\nTransposed Matrix:\n";
+    displayMatrix(transpose, columns, rows);
+}
+
+// -----------------------------------------------------------------------------
+// PART B — Add Two Matrices
+// -----------------------------------------------------------------------------
+void addMatrices(int matrixA[10][10], int matrixB[10][10],
+                 int rows, int columns) {
+    int sum[10][10];
+
+    // Compute element-wise sum
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            sum[i][j] = matrixA[i][j] + matrixB[i][j];
+        }
+    }
+
+    cout << "\nMatrix A:\n";
+    displayMatrix(matrixA, rows, columns);
+
+    cout << "\nMatrix B:\n";
+    displayMatrix(matrixB, rows, columns);
+
+    cout << "\nSum of Matrix A and Matrix B:\n";
+    displayMatrix(sum, rows, columns);
+}
+
+// -----------------------------------------------------------------------------
+// PART C — Multiply Two Matrices
+// -----------------------------------------------------------------------------
+void multiplyMatrices(int matrixA[10][10], int matrixB[10][10],
+                      int rowsA, int columnsA,
+                      int rowsB, int columnsB) {
+    // Initialize product matrix with zeros
+    int product[10][10] = {};
+
+    // Compute matrix multiplication: A (rowsA x columnsA) * B (rowsB x columnsB)
+    for (int i = 0; i < rowsA; i++) {
+        for (int j = 0; j < columnsB; j++) {
+            for (int k = 0; k < columnsA; k++) {
+                product[i][j] += matrixA[i][k] * matrixB[k][j];
+            }
+        }
+    }
+
+    cout << "\nMatrix A:\n";
+    displayMatrix(matrixA, rowsA, columnsA);
+
+    cout << "\nMatrix B:\n";
+    displayMatrix(matrixB, rowsB, columnsB);
+
+    cout << "\nProduct of Matrix A and Matrix B:\n";
+    displayMatrix(product, rowsA, columnsB);
+}
+
+// -----------------------------------------------------------------------------
+// MAIN FUNCTION
+// -----------------------------------------------------------------------------
+int main() {
+
+    // =========================================================================
+    // PART A — Transpose a Matrix
+    // =========================================================================
+
+    int matrix[10][10];
+    int rows, columns;
+
+    cout << "========================================\n";
+    cout << "PART A - TRANSPOSE A MATRIX\n";
+    cout << "========================================\n";
+    cout << "Enter number of rows: ";
+    cin >> rows;
+
+    cout << "Enter number of columns: ";
+    cin >> columns;
+
+    if (!isValidSize(rows, columns)) {
+        cout << "Error: matrix dimensions must be between 1 and 10.\n";
+        return 1;
+    }
+
+    cout << "\nEnter the elements of the matrix:\n";
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            cout << "Enter element [" << i << "][" << j << "]: ";
+            cin >> matrix[i][j];
+        }
+    }
+
+    transposeMatrix(matrix, rows, columns);
+
+
+    // =========================================================================
+    // PART B — Add Two Matrices
+    // =========================================================================
+
+    int matrixA[10][10];
+    int matrixB[10][10];
+    int addRows, addColumns;
+
+    cout << "\n\n========================================\n";
+    cout << "PART B - ADD TWO MATRICES\n";
+    cout << "========================================\n";
+
+    cout << "Enter number of rows: ";
+    cin >> addRows;
+
+    cout << "Enter number of columns: ";
+    cin >> addColumns;
+
+    if (!isValidSize(addRows, addColumns)) {
+        cout << "Error: matrix dimensions must be between 1 and 10.\n";
+        return 1;
+    }
+
+    cout << "\nEnter elements of Matrix A:\n";
+    for (int i = 0; i < addRows; i++) {
+        for (int j = 0; j < addColumns; j++) {
+            cout << "Enter element [" << i << "][" << j << "]: ";
+            cin >> matrixA[i][j];
+        }
+    }
+
+    cout << "\nEnter elements of Matrix B:\n";
+    for (int i = 0; i < addRows; i++) {
+        for (int j = 0; j < addColumns; j++) {
+            cout << "Enter element [" << i << "][" << j << "]: ";
+            cin >> matrixB[i][j];
+        }
+    }
+
+    addMatrices(matrixA, matrixB, addRows, addColumns);
+
+
+    // =========================================================================
+    // PART C — Multiply Two Matrices
+    // =========================================================================
+
+    int multiplyA[10][10];
+    int multiplyB[10][10];
+
+    int rowsA, columnsA;
+    int rowsB, columnsB;
+
+    cout << "\n\n========================================\n";
+    cout << "PART C - MULTIPLY TWO MATRICES\n";
+    cout << "========================================\n";
+
+    cout << "Enter number of rows for Matrix A: ";
+    cin >> rowsA;
+
+    cout << "Enter number of columns for Matrix A: ";
+    cin >> columnsA;
+
+    cout << "\nEnter number of rows for Matrix B: ";
+    cin >> rowsB;
+
+    cout << "Enter number of columns for Matrix B: ";
+    cin >> columnsB;
+
+    if (!isValidSize(rowsA, columnsA) || !isValidSize(rowsB, columnsB)) {
+        cout << "Error: matrix dimensions must be between 1 and 10.\n";
+        return 1;
+    }
+
+    // Check if multiplication condition holds true (Columns A == Rows B)
+    if (columnsA != rowsB) {
+        cout << "\nMatrix multiplication is not possible.\n";
+        cout << "The number of columns in Matrix A must equal ";
+        cout << "the number of rows in Matrix B.\n";
+        return 0;
+    }
+
+    cout << "\nEnter elements of Matrix A:\n";
+    for (int i = 0; i < rowsA; i++) {
+        for (int j = 0; j < columnsA; j++) {
+            cout << "Enter element [" << i << "][" << j << "]: ";
+            cin >> multiplyA[i][j];
+        }
+    }
+
+    cout << "\nEnter elements of Matrix B:\n";
+    for (int i = 0; i < rowsB; i++) {
+        for (int j = 0; j < columnsB; j++) {
+            cout << "Enter element [" << i << "][" << j << "]: ";
+            cin >> multiplyB[i][j];
+        }
+    }
+
+    multiplyMatrices(multiplyA, multiplyB, rowsA, columnsA, rowsB, columnsB);
+
+    return 0;
+}
